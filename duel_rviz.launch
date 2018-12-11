@@ -1,0 +1,10 @@
+<!-- Start rviz in separate terminal with:  -->
+<launch>
+
+  <node pkg="duel_turtlebot" type="simulator.py" name="fencing_simulator" />
+
+  <node type="rviz" name="rviz" pkg="rviz" args="-d ~/catkin_ws/src/duel_turtlebot/rviz/turtlebot_fencing.rviz" />
+
+  <node pkg="tf" type="static_transform_publisher" name="global_map_broadcaster" args="0 0 0 0 0 0 1 map myframe 10" />
+
+</launch>
