@@ -1,1 +1,8 @@
 data/
+
+scripts/utils/__init__.pyc
+scripts/utils/config.pyc
+scripts/utils/generator.pyc
+scripts/utils/scorer.pyc
+scripts/utils/utils.pyc
+scripts/utils/xbox.pyc
