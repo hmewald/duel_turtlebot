@@ -74,6 +74,11 @@ class Scorer(object):
         feed_dict["traj_lengths:0"] = np.repeat(np.array([len(self.car1_history)]), n_prop, axis=0)
         feed_dict["sample_ct:0"] = np.repeat(np.array([1]), n_prop, axis=0)
 
+        print('car1: ' + np.shape(feed_dict["car1:0"])),
+        print(' car2: ' + np.shape(feed_dict["car2:0"])),
+        print(' car1 future: ' + np.shape(feed_dict["car1_future:0"])),
+        print(chr(13)),
+
         action_pred = self.sess.run(self.y, feed_dict=feed_dict)
 
         car2_futures = []

@@ -240,8 +240,8 @@ class RobotPlayer():
     	self.control_pub.publish(control_msg)
 
         # print current controller region
-        print('Current controller region: ' + self.region_map[control_region]),
-        print(chr(13)),
+        # print('Current controller region: ' + self.region_map[control_region]),
+        # print(chr(13)),
 
         # if environment == 'sim':
         rosbag_msg = TwistStamped()
