@@ -55,14 +55,26 @@ class Scorer(object):
     def score_trajectories(self, car1_state, car2_state, car1_future_trajs):
         # car1_state, car2_state need to be np arrays with 5 elements
         # car1_future_trajs needs to be a list of np arrays shaped [1,timesteps,5]
+        print(chr(13)),
         car1_reshaped = np.reshape(car1_state, [1,1,5])
-        car2_reshaped = np.reshape(car1_state, [1,1,5])
+        car2_reshaped = np.reshape(car2_state, [1,1,5])
         self.car1_history.append(car1_reshaped)
+        # print("History1 "),
+        # print(len(self.car1_history)),
         if len(self.car1_history) > HISTORY_BUFFER:
             self.car1_history.pop(0)
-        self.car2_history.append(car1_reshaped)
+        elif len(self.car1_history) < MIN_HISTORY_LENGTH:
+            while len(self.car1_history) < MIN_HISTORY_LENGTH:
+                self.car1_history.append(self.car1_history[-1])
+
+        self.car2_history.append(car2_reshaped)
+        # print("History2 "),
+        # print(len(self.car2_history)),
         if len(self.car2_history) > HISTORY_BUFFER:
             self.car2_history.pop(0)
+        elif len(self.car2_history) < MIN_HISTORY_LENGTH:
+            while len(self.car2_history) < MIN_HISTORY_LENGTH:
+                self.car2_history.append(self.car2_history[-1])
 
         n_prop = len(car1_future_trajs)
 
@@ -74,10 +86,18 @@ class Scorer(object):
         feed_dict["traj_lengths:0"] = np.repeat(np.array([len(self.car1_history)]), n_prop, axis=0)
         feed_dict["sample_ct:0"] = np.repeat(np.array([1]), n_prop, axis=0)
 
-        print('car1: ' + np.shape(feed_dict["car1:0"])),
-        print(' car2: ' + np.shape(feed_dict["car2:0"])),
-        print(' car1 future: ' + np.shape(feed_dict["car1_future:0"])),
-        print(chr(13)),
+
+        print('car1: '),
+        print(np.shape(feed_dict["car1:0"])),
+        print(' car2: '),
+        print(np.shape(feed_dict["car2:0"])),
+        print(' car1 future: '),
+        print(np.shape(feed_dict["car1_future:0"])),
+        print(' traj_lengths: '),
+        print(feed_dict["traj_lengths:0"]),
+        print(' sample_ct: '),
+        print(feed_dict["sample_ct:0"]),
+
 
         action_pred = self.sess.run(self.y, feed_dict=feed_dict)
 
